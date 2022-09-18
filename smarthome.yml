@@ -11,6 +11,11 @@ services:
       - "${DATADIR}/mosquitto/log:/mosquitto/log"
     ports:
       - 1883:1883
+    logging:
+      driver: loki
+      options:
+        loki-url: "http://localhost:3100/loki/api/v1/push"
+        max-size: "500m"
 
   grafana:
     container_name: grafana
@@ -29,6 +34,11 @@ services:
       - GF_AUTH_ANONYMOUS_ENABLED=true
       - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
       - GF_SECURITY_ALLOW_EMBEDDING=true
+    logging:
+      driver: loki
+      options:
+        loki-url: "http://localhost:3100/loki/api/v1/push"
+        max-size: "500m"
 
   influxdb:
     container_name: influxdb
@@ -43,6 +53,11 @@ services:
       retries: 24
     ports:
       - 127.0.0.1:8086:8086
+    logging:
+      driver: loki
+      options:
+        loki-url: "http://localhost:3100/loki/api/v1/push"
+        max-size: "500m"
 
   tasmoadmin:
     container_name: tasmoadmin
@@ -52,6 +67,11 @@ services:
       - "${DATADIR}/tasmoadmin:/data"
     ports:
       - 3080:80
+    logging:
+      driver: loki
+      options:
+        loki-url: "http://localhost:3100/loki/api/v1/push"
+        max-size: "500m"
 
   #zigbee2mqtt:
   #  image: koenkk/zigbee2mqtt

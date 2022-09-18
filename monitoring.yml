@@ -5,12 +5,12 @@ services:
     image: prom/prometheus:v2.37.0
     container_name: prometheus
     restart: unless-stopped
-    user: ${PUID}:${PGID}
+    user: '1000'
     ports:
       - "9090:9090"
     volumes:
-      - ${DATADIR}/prometheus/etc:/etc/prometheus
-      - ${DATADIR}/prometheus/data:/prometheus
+      - ${DATADIR}/prometheus/etc/:/etc/prometheus
+      - ${DATADIR}/prometheus/data/:/prometheus
     command:
       - "--config.file=/etc/prometheus/prometheus.yml"
     logging:
@@ -26,6 +26,7 @@ services:
       - '--path.rootfs=/host'
     pid: host
     restart: unless-stopped
+    user: '1000'
     volumes:
       - '/:/host:ro,rslave'
     logging:
@@ -38,6 +39,7 @@ services:
     #image: gcr.io/cadvisor/cadvisor
     image: zcube/cadvisor:latest
     container_name: cadvisor
+    user: '1000'
     command:
       - "--docker_only=true"
       - "--housekeeping_interval=30s"
